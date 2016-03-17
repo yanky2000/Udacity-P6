@@ -1,0 +1,26 @@
+doctype html
+head
+  title Simple Map
+  meta(name='viewport', content='initial-scale=1.0')
+  meta(charset='utf-8')
+  link(rel="stylesheet", href="assets/css/normalize.css")
+  link(rel="stylesheet", href="css/styles.css")
+body
+  .home-wrap
+    aside.search-panel
+
+      //- label(for='l')
+      input.search-field(data-bind="textInput: userLocation" name='search', placeholder='type your search ')
+      ul(data-bind="foreach: locationData")
+        li(data-bind="text: label")
+
+    #map
+
+
+
+
+  script(src='js/map-data.js', async='', defer='')
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCxXKeQf7B1-ar9clBwmK5cu9lmXeRNqpQ&callback=initMap' async defer)
+
+  script(src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.3.0.js")
+  script(src="js/app.js")

@@ -1,0 +1,38 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.home-wrap {
+  position: relative;
+  height: 100%;
+}
+
+.home-wrap #map {
+  height: 100%;
+  width: 100%;
+}
+
+.home-wrap aside {
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background-color: grey;
+}
+
+.home-wrap aside input {
+  width: 100%;
+}
+
+.home-wrap aside ul {
+  color: white;
+  list-style-type: none;
+}
+
+.home-wrap aside ul li {
+  margin-bottom: 20px;
+}
