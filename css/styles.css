@@ -36,3 +36,11 @@ html, body {
 .home-wrap aside ul li {
   margin-bottom: 20px;
 }
+
+.filtered {
+  background-color: red;
+}
+
+.raw {
+  background-color: blue;
+}

@@ -69,10 +69,6 @@ locationList = [
 		icon: "url: or link" #depends on data set
 		rubric: 'leasure'
 	}, 
-
-
-
-
 ]
 
 

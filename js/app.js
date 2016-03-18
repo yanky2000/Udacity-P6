@@ -1,8 +1,14 @@
+//window.self = {};
+// and add self. to locationData
+
+
 var ViewModel, location, locationList;
+'use strict';
+
 
 locationData = [
   {
-    label: 'yandex label',
+    label: 'yandex',
     position: {
       lat: 55.7342446,
       lng: 37.5881678
@@ -66,32 +72,32 @@ Location = function(data) {
 ViewModel = function() {
   var self = this;
 
-  this.locationList = ko.observableArray([]);
+  // this.locationList = ko.observableArray([]);
 
-  locationData.forEach(function(locItem){
-    self.locationList.push(new Location(locItem));
+  // locationData.forEach(function(locItem){
+  //   self.locationList.push(new Location(locItem));
+  // });
+
+
+
+/* =============== Locations filter ================= */
+
+  this.filter = ko.observable("");
+
+  self.locationsToRender = ko.computed(function() {
+
+    var matchString = self.filter().toLowerCase();
+
+    if (!matchString) {
+      return locationData;
+    } else {
+      return (ko.utils.arrayFilter(locationData, function (item) {
+        return ((item.label.toLowerCase().indexOf(matchString) > -1) ? true : false);
+      }));
+    }
   });
 
-  this.userLocation = ko.observable("");
-
-  //When user inputs some value in search box
-  // new location list is rendered.
-
-  var labelListToRender = ko.observableArray();
-  // console.log(this.userLocation);
-  for (var i = 0, labelListLength = locationData.length; i < labelListLength; i++ ) {
-    // labelListToRender.push(locationData[i].label);
-    var x = "y";
-    if (self.userLocation.indexOf(locationData[i].label)) {
-      labelListToRender.push(locationData[i].label);
-      }
-    // var result = userLocation.test()
-
-  };
-  console.log(labelListToRender);
-
-
- };
+};
 
 ko.applyBindings(new ViewModel());
 

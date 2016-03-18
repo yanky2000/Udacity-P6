@@ -9,8 +9,8 @@
 <body>
   <div class="home-wrap">
     <aside class="search-panel">
-      <input data-bind="textInput: userLocation" name="search" placeholder="type your search " class="search-field">
-      <ul data-bind="foreach: locationData">
+      <input data-bind="textInput: filter" name="search" placeholder="type your search ">
+      <ul data-bind="foreach: locationsToRender">
         <li data-bind="text: label"></li>
       </ul>
     </aside>

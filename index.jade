@@ -10,9 +10,12 @@ body
     aside.search-panel
 
       //- label(for='l')
-      input.search-field(data-bind="textInput: userLocation" name='search', placeholder='type your search ')
-      ul(data-bind="foreach: locationData")
+      input(data-bind="textInput: filter" name='search', placeholder='type your search ')
+
+      ul(data-bind="foreach: locationsToRender")
         li(data-bind="text: label")
+
+
 
     #map
 
