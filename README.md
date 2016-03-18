@@ -2,7 +2,7 @@
 
 ## Questions: 
 
-1. There is a bug in my "filter" code. it's value doesn't reflect changes in input field and captures only the first char of input value. 
-I'm lost, but not sure where to look for. 
+Confused about how to 'glue' google map code with ko.observableArray. What is the actual scoping architecture, when my app runs? Specifically, global vars in app.js and map.js? How window. relates to it?
 
-2. Confused about how to 'glue' google map code with ko.observableArray? What is the actual scoping architecture, when my app runs? Specifically, global vars in app.js and map.js? How window. relates to it?
+Do I need convert array of initial data to observableArray? 
+Is it neccessary because of future localStorage or Firebase issues?
