@@ -11,9 +11,10 @@ body
 
       //- label(for='l')
       input(data-bind="textInput: filter" name='search', placeholder='type your search ')
-
-      ul(data-bind="foreach: locationsToRender")
-        li(data-bind="text: label")
+      p(data-bind="text: filter")
+      ul.loc-list(data-bind="foreach: locationList")
+        li.loc-item(data-bind="text: label")
+        li(data-bind="text: isVisible")
 
 
 
@@ -22,8 +23,8 @@ body
 
 
 
-  script(src='js/map-data.js', async='', defer='')
-  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCxXKeQf7B1-ar9clBwmK5cu9lmXeRNqpQ&callback=initMap' async defer)
 
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCxXKeQf7B1-ar9clBwmK5cu9lmXeRNqpQ&callback=initMap' async defer)
+  script(src='js/map-data.js', async='', defer='')
   script(src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.3.0.js")
   script(src="js/app.js")

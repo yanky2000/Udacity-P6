@@ -1,12 +1,6 @@
-//window.self = {};
-// and add self. to locationData
-
-
-var ViewModel, location, locationList;
+var Model = function () {
 'use strict';
-
-
-locationData = [
+  this.all_locations = [
   {
     label: 'yandex',
     position: {
@@ -16,7 +10,8 @@ locationData = [
     title: 'Yandex LLC',
     info: 'Leading Russian IT company',
     icon: "url: or link",
-    rubric: 'IT'
+    rubric: 'IT',
+    isVisible: true
   }, {
     label: 'white crane',
     position: {
@@ -26,7 +21,8 @@ locationData = [
     title: 'white crane',
     info: 'Good Korean restaurant',
     icon: "url: or link",
-    rubric: 'cafe'
+    rubric: 'cafe',
+    isVisible: true
   }, {
     label: 'Ice skating rink',
     position: {
@@ -36,7 +32,8 @@ locationData = [
     title: 'Ice skating rink "Krylatskoe"',
     info: 'Good ice, large space, good for kids',
     icon: "url: or link",
-    rubric: 'leasure'
+    rubric: 'leasure',
+    isVisible: true
   }, {
     label: 'The State Tretyakov Gallery',
     position: {
@@ -46,7 +43,8 @@ locationData = [
     title: 'The State Tretyakov Gallery',
     info: 'Art museum featuring 21st-century Russian works, including avant-garde & Socialist Realism exhibits',
     icon: "url: or link",
-    rubric: 'culture'
+    rubric: 'culture',
+    isVisible: true
   }, {
     label: 'Luzhniki Stadium',
     position: {
@@ -56,48 +54,65 @@ locationData = [
     title: 'Luzhniki Stadium',
     info: 'Olympic venue, national football ground & home to both Torpedo Moscow & Spartak Moscow soccer teams.',
     icon: "url: or link",
-    rubric: 'leasure'
+    rubric: 'leasure',
+    isVisible: true
   }
-];
+  ];
+  return this.all_locations;
+};
 
-Location = function(data) {
+var initLocList = new Model();
+
+var Location = function(data) {
   this.label = ko.observable(data.label);
   this.position = ko.observable(data.position);
   this.title = ko.observable(data.title);
   this.info = ko.observable(data.info);
   this.icon = ko.observable(data.icon);
   this.rubric = ko.observable(data.rubric);
+  debugger;
+  this.isVisible = ko.computed(function(){
+    return (this.label().toLowerCase().indexOf(matchString) == -1) ? false : true;
+  });
 };
 
-ViewModel = function() {
+
+
+var ViewModel = function() {
   var self = this;
 
-  // this.locationList = ko.observableArray([]);
 
-  // locationData.forEach(function(locItem){
-  //   self.locationList.push(new Location(locItem));
-  // });
+  this.my_list = ko.observableArray([]);
+  initLocList.forEach(function(loc){
+    self.my_list.push(new Location(loc));
+  });
+
+  console.log(self.my_list());
 
 
 
-/* =============== Locations filter ================= */
-
+  /* =============== Locations filter ================= */
   this.filter = ko.observable("");
 
-  self.locationsToRender = ko.computed(function() {
+  var matchString = self.filter().toLowerCase();
 
-    var matchString = self.filter().toLowerCase();
 
-    if (!matchString) {
-      return locationData;
-    } else {
-      return (ko.utils.arrayFilter(locationData, function (item) {
-        return ((item.label.toLowerCase().indexOf(matchString) > -1) ? true : false);
-      }));
-    }
-  });
+  // this.changeVisible = function () {
+
+  //   if (!matchString) {
+  //     return true;
+  //     }
+  //     else {
+  //       for (var i=0, loc_length = my_list.length; i < loc_length; i++) {
+  //         my_list[i].isVisible = (my_list[i].label.toLowerCase().indexOf(matchString) == -1) ? false : true;
+  //         }
+  //       }
+  //   };
+
+
 
 };
 
 ko.applyBindings(new ViewModel());
+
 

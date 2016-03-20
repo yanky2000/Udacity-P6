@@ -37,10 +37,6 @@ html, body {
   margin-bottom: 20px;
 }
 
-.filtered {
-  background-color: red;
-}
-
-.raw {
-  background-color: blue;
+li.loc-item:hover {
+  transform: scale(1.05);
 }

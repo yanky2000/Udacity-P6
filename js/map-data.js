@@ -10,8 +10,12 @@
 // # On selection (list item & marker) -> info window + animation of marker
 
 
-var map, 
-	marker
+var map,
+	marker,
+	markerList;
+
+// trconsole.log(this.locationsToRender());
+
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -19,12 +23,25 @@ function initMap() {
     zoom: 13
   });
 
+  // console.log(x);
+  // console.log(locationData);
+  // console.log(ViewModel.y);
+  // console.log(ViewModel.locationsToRender);
+
+
+  // for (var i= 0, locArrLength = ViewModel.locationsToRender().length; i < locArrLength; i++) {
+  //   console.log(i);
+
+  //   // debugger
+  // }
+
   /*=========== Marker Data ===========*/
+  // TODO: CHANGE default marker locations
   marker = new google.maps.Marker({
     map: map,
     draggable: true,
     animation: google.maps.Animation.DROP,
-    position: {lat: 55.7342446, lng: 37.5881678} // TODO: CHANGE default marker locations
+    position: {lat: 55.7342446, lng: 37.5881678}
   });
 
   /*=========== Marker Animations ===========*/
@@ -38,10 +55,11 @@ function initMap() {
   var contentString = 'Put information here';
 
   var infowindow = new google.maps.InfoWindow({
-    content: contentString 
+    content: contentString
   });
 
 }
+
 
 
 function toggleBounce() {
