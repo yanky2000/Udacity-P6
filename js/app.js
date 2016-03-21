@@ -1,6 +1,7 @@
-var Model = function () {
-'use strict';
-  this.all_locations = [
+
+
+var locMasterList = [
+  // 'use strict',
   {
     label: 'yandex',
     position: {
@@ -57,55 +58,46 @@ var Model = function () {
     rubric: 'leasure',
     isVisible: true
   }
-  ];
-  return this.all_locations;
-};
-
-// var initLocList = new Model();
-// console.log(initLocList);
+];
 
 
-var Location = function(data) {
-  var self = this;
-  this.label = ko.observable(data.label);
-  this.position = ko.observable(data.position);
-  this.title = ko.observable(data.title);
-  this.info = ko.observable(data.info);
-  this.icon = ko.observable(data.icon);
-  this.rubric = ko.observable(data.rubric);
-  this.isVisible = ko.observable(data.isVisible);
-    // return console.log(self.label);
-
-    // return !matchString || (self.label().toLowerCase().indexOf(ViewModel().matchString()) > -1)  ? true : false;
-
+var Location = function(location) {
+  // var self = this;
+  this.label = ko.observable(location.label);
+  this.position = ko.observable(location.position);
+  this.title = ko.observable(location.title);
+  this.info = ko.observable(location.info);
+  this.icon = ko.observable(location.icon);
+  this.rubric = ko.observable(location.rubric);
+  this.isVisible = ko.computed(function() {return location.isVisible;});
 
 };
-// var matchString;
-
 
 var ViewModel = function() {
   var self = this;
+  
+  this.filter = ko.observable("");
 
   this.my_list = ko.observableArray([]);
 
-  var x = new Model();
+  /*====== List of locations for rendering =======*/
+  // We setup 'isVisible' method here in VM to have access to filter(). It will serve as a conditional parameter for rendering.
+  // Other (abandonded)approach was to filter locations and make another 'list' of results. 
+  locMasterList.map(function(locItem) {
 
-  x.forEach(function(loc) {
-    self.my_list.push(new Location(loc));
+    var x = new Location(locItem);
+
+    // With conditional statement in index.html observable isVisible property allow us to get 'live' update of search results
+    x.isVisible = ko.computed(function() {
+      return (x.label().toLowerCase().indexOf(self.filter().toLowerCase()) > -1) ? true : false;
+      }, this);
+
+    self.my_list.push(x);
+
   });
-  // console.log(self.my_list()[0].label());
-  // console.log('this is my_list: '+ self.my_list());
 
+ 
 
-
-  /* =============== Locations filter ================= */
-  this.filter = ko.observable("");
-
-  this.matchString = self.filter().toLowerCase();
-  this.changeVisible = function name(params) {
-
-    this.isVisible = (this.label.toLowerCase().indexOf(matchString) == -1) ? false : true;
-  };
 };
 
 ko.applyBindings(new ViewModel());
