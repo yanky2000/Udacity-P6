@@ -61,56 +61,51 @@ var Model = function () {
   return this.all_locations;
 };
 
-var initLocList = new Model();
+// var initLocList = new Model();
+// console.log(initLocList);
+
 
 var Location = function(data) {
+  var self = this;
   this.label = ko.observable(data.label);
   this.position = ko.observable(data.position);
   this.title = ko.observable(data.title);
   this.info = ko.observable(data.info);
   this.icon = ko.observable(data.icon);
   this.rubric = ko.observable(data.rubric);
-  debugger;
-  this.isVisible = ko.computed(function(){
-    return (this.label().toLowerCase().indexOf(matchString) == -1) ? false : true;
-  });
-};
+  this.isVisible = ko.observable(data.isVisible);
+    // return console.log(self.label);
 
+    // return !matchString || (self.label().toLowerCase().indexOf(ViewModel().matchString()) > -1)  ? true : false;
+
+
+};
+// var matchString;
 
 
 var ViewModel = function() {
   var self = this;
 
-
   this.my_list = ko.observableArray([]);
-  initLocList.forEach(function(loc){
+
+  var x = new Model();
+
+  x.forEach(function(loc) {
     self.my_list.push(new Location(loc));
   });
-
-  console.log(self.my_list());
+  // console.log(self.my_list()[0].label());
+  // console.log('this is my_list: '+ self.my_list());
 
 
 
   /* =============== Locations filter ================= */
   this.filter = ko.observable("");
 
-  var matchString = self.filter().toLowerCase();
+  this.matchString = self.filter().toLowerCase();
+  this.changeVisible = function name(params) {
 
-
-  // this.changeVisible = function () {
-
-  //   if (!matchString) {
-  //     return true;
-  //     }
-  //     else {
-  //       for (var i=0, loc_length = my_list.length; i < loc_length; i++) {
-  //         my_list[i].isVisible = (my_list[i].label.toLowerCase().indexOf(matchString) == -1) ? false : true;
-  //         }
-  //       }
-  //   };
-
-
-
+    this.isVisible = (this.label.toLowerCase().indexOf(matchString) == -1) ? false : true;
+  };
 };
 
 ko.applyBindings(new ViewModel());

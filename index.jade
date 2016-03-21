@@ -12,7 +12,7 @@ body
       //- label(for='l')
       input(data-bind="textInput: filter" name='search', placeholder='type your search ')
       p(data-bind="text: filter")
-      ul.loc-list(data-bind="foreach: locationList")
+      ul.loc-list(data-bind="foreach: my_list")
         li.loc-item(data-bind="text: label")
         li(data-bind="text: isVisible")
 

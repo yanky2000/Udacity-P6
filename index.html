@@ -11,7 +11,7 @@
     <aside class="search-panel">
       <input data-bind="textInput: filter" name="search" placeholder="type your search ">
       <p data-bind="text: filter"></p>
-      <ul data-bind="foreach: locationList" class="loc-list">
+      <ul data-bind="foreach: my_list" class="loc-list">
         <li data-bind="text: label" class="loc-item"></li>
         <li data-bind="text: isVisible"></li>
       </ul>
