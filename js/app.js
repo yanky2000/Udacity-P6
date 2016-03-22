@@ -73,33 +73,35 @@ var Location = function(location) {
 
 };
 
+
 var ViewModel = function() {
   var self = this;
-  
+
   this.filter = ko.observable("");
 
   this.my_list = ko.observableArray([]);
 
   /*====== List of locations for rendering =======*/
   // We setup 'isVisible' method here in VM to have access to filter(). It will serve as a conditional parameter for rendering.
-  // Other (abandonded)approach was to filter locations and make another 'list' of results. 
+  // Other (abandonded)approach was to filter locations and make another 'list' of results.
   locMasterList.map(function(locItem) {
 
-    var x = new Location(locItem);
+    var listItem = new Location(locItem);
 
     // With conditional statement in index.html observable isVisible property allow us to get 'live' update of search results
-    x.isVisible = ko.computed(function() {
-      return (x.label().toLowerCase().indexOf(self.filter().toLowerCase()) > -1) ? true : false;
+    listItem.isVisible = ko.computed(function() {
+      return (listItem.label().toLowerCase().indexOf(self.filter().toLowerCase()) > -1) ? true : false;
       }, this);
 
-    self.my_list.push(x);
+    self.my_list.push(listItem);
 
   });
 
- 
 
 };
 
-ko.applyBindings(new ViewModel());
 
+var vm = new ViewModel();
+
+ko.applyBindings(vm);
 
