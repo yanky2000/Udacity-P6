@@ -105,12 +105,16 @@ var app = app || {};
     var markerVisible = ko.computed(function() {
 
       self.my_list().forEach(function(e) {
-        e.marker.position = e.isVisible ? app.map : null;
+        e.marker = e.marker || {};
+        e.marker.map = e.isVisible ? app.map : null;
+        console.log(e);
+        debugger;
+        updateMarkers(e.marker);
 
       });
 
 
-    });
+    }, this);
 
 
 

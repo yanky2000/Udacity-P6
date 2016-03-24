@@ -27,6 +27,7 @@ function initMap() {
       });
 
     markerList.push(item.marker);
+    debugger;
 
     /*=========== Marker Animations ===========*/
     item.marker.addListener('click', function() {
@@ -53,10 +54,10 @@ function initMap() {
 
 }
 
-  // app.updateMarkers = function () {
-  //   markerList.forEach(function(markerItem){
-  //     markerItem.setMap(markerItem.map);
-  //   });
-  // };
+  function updateMarkers (markerItem) {
+    // markerArray.forEach(function(markerItem){
+      markerItem.setMap(markerItem.map);
+    // });
+  };
   
 
