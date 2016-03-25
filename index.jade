@@ -7,24 +7,20 @@ head
   link(rel="stylesheet", href="css/styles.css")
 body
   .home-wrap
-    aside.search-panel
+    aside.search-panel(data-bind="with: app.ViewModel")
 
       //- label(for='l')
       input(data-bind="textInput: filter" name='search', placeholder='type your search ')
       p(data-bind="text: filter")
-      ul.loc-list(data-bind="foreach: my_list")
+      ul.loc-list(data-bind="foreach: locList")
         li.loc-item(data-bind="text: label")
         li(data-bind="text: isVisible")
 
-
-
     #map
 
-
-
-
-
+  script(src="js/model.js")
+  script(src='assets/js/knockout-3.4.0-debug.js')
+  script(src="js/main.js")
   script(src='js/map-data.js')
-  script(src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.3.0.js")
-  script(src="js/app.js")
-  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCxXKeQf7B1-ar9clBwmK5cu9lmXeRNqpQ&callback=initMap' async defer )
+   
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCxXKeQf7B1-ar9clBwmK5cu9lmXeRNqpQ&callback=app.ViewModel.loader' async defer )

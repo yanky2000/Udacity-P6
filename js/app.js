@@ -97,24 +97,25 @@ var app = app || {};
 
     });
 
+    // test = self.my_list([0]).isVisible()
+
+    
 
     // set visibility (set map property for markers) every time isVisible
     // (i.e. filter obervable) changes
     // var markerList = ko.observableArray([]);
 
-    var markerVisible = ko.computed(function() {
+    // var markerVisible = ko.computed(function() {
 
-      self.my_list().forEach(function(e) {
-        e.marker = e.marker || {};
-        e.marker.map = e.isVisible ? app.map : null;
-        console.log(e);
-        debugger;
-        updateMarkers(e.marker);
+    //   self.my_list().forEach(function(e) {
+    //     e.marker = e.marker || {};
+    //     e.marker.map = e.isVisible ? app.map : null;
 
-      });
+    //   });
+    //     updateMarkers();
 
 
-    }, this);
+    // }, this);
 
 
 
