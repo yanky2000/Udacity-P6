@@ -8,7 +8,7 @@ app.Map = {
             zoom: 13
         });
         
-        (function () {
+        // (function () {
             
             app.ViewModel.locList().forEach(function(item) {
             
@@ -40,7 +40,7 @@ app.Map = {
                 }
                 
             })
-        }) ()
+        // }) ()
       
         
     }

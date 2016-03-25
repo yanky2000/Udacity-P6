@@ -53,15 +53,35 @@ var app = app || {};
         bindMarkers: function () {
             //This will render only those markers which contains user's location    
             this.locList().forEach(function(location) {
-               
+                
                 location.marker.map = ko.computed(function () {
-                    location.isVisible() ? map : null;
-                }, this)
+                    return location.marker.map = location.isVisible() ? map : null;
+                    
+                }, this);
+
+            });
+        },
+        
+        test: function () {
+            
+            this.locList().forEach(function(location) {
+                
+                console.log(location.label())
+                console.log('map is Object?')
+                console.log(location.marker.map instanceof Object)
+                console.log(location.marker.map)
+                
+                // console.log(map instanceof Function);
+                // console.log(location.marker.map instanceof Function)
+               
+                
+                // console.log(location.marker)
             });
         }, 
         
         loader: function () {
-            app.ViewModel.init();
+            console.log('google is loaded')
+            // app.ViewModel.init();
             app.Map.initMap();
             app.ViewModel.bindMarkers();
         }
