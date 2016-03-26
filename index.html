@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-  <title>Simple Map</title>
+  <title>Fancy Map</title>
   <meta name="viewport" content="initial-scale=1.0">
   <meta charset="utf-8">
   <link rel="stylesheet" href="assets/css/normalize.css">
@@ -12,8 +12,8 @@
       <input data-bind="textInput: filter" name="search" placeholder="type your search ">
       <p data-bind="text: filter"></p>
       <ul data-bind="foreach: locList" class="loc-list">
-        <li data-bind="text: label" class="loc-item"></li>
-        <li data-bind="text: isVisible"></li>
+        <li data-bind="text: label, click: $parent.getFocus" class="loc-item"></li>
+        <!-- li(data-bind="text: isVisible")-->
         <!-- li(data-bind="text: marker")-->
       </ul>
     </aside>

@@ -1,6 +1,6 @@
 doctype html
 head
-  title Simple Map
+  title Fancy Map
   meta(name='viewport', content='initial-scale=1.0')
   meta(charset='utf-8')
   link(rel="stylesheet", href="assets/css/normalize.css")
@@ -13,8 +13,8 @@ body
       input(data-bind="textInput: filter" name='search', placeholder='type your search ')
       p(data-bind="text: filter")
       ul.loc-list(data-bind="foreach: locList")
-        li.loc-item(data-bind="text: label")
-        li(data-bind="text: isVisible")
+        li.loc-item(data-bind="text: label, click: $parent.getFocus")
+        // li(data-bind="text: isVisible")
         // li(data-bind="text: marker")
 
     #map

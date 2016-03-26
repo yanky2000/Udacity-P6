@@ -33,10 +33,9 @@ html, body {
   list-style-type: none;
 }
 
-.home-wrap aside ul li {
+li.loc-item {
   margin-bottom: 20px;
+  cursor: pointer;
 }
 
-li.loc-item:hover {
-  transform: scale(1.05);
-}
+/*# sourceMappingURL=styles.css.map */
