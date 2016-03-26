@@ -19,9 +19,9 @@ body
 
     #map
 
-  script(src="js/model.js")
   script(src='assets/js/knockout-3.4.0-debug.js')
+  script(src="js/model.js")
   script(src="js/main.js")
   script(src='js/map-data.js')
    
-  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCxXKeQf7B1-ar9clBwmK5cu9lmXeRNqpQ&callback=app.ViewModel.loader' async defer )
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCxXKeQf7B1-ar9clBwmK5cu9lmXeRNqpQ&callback=app.Map.initMap' async defer )

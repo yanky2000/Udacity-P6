@@ -11,9 +11,8 @@
 var app = app || {}; 
 (function () {
     'use strict'; 
-    // var filter,
-        // locList,
-        var self = this;
+    var self = this;
+        
     
     
     app.ViewModel = {
@@ -33,58 +32,44 @@ var app = app || {};
                 // this.isVisible = ko.computed(function() {return location.isVisible;});
                 };
 
-                        
-            // We start of by creating a list of locations from Model data
-            // and add bolean isVisible property which will react to user filter value
+            // We start of by creating a list of locations from Model data. 
+            // the isVisible property is used to "filter" both location list and markers
             app.Model.map(function(locItem) {
                 var listItem = new Location(locItem);
                 
                 listItem.isVisible = ko.computed(function() {
-                    var toggleValue = (listItem.label().toLowerCase().indexOf(app.ViewModel.filter().toLowerCase()) > -1) ? true : false;
-                
-                    return toggleValue;
+                    var list_Str = listItem.label().toLowerCase();
+                    var search_Str = app.ViewModel.filter();
+                    
+                    var isVisibleValue = (list_Str.indexOf(search_Str) > -1) ? true : false;
+                    
+                    if (listItem.marker) {
+                        listItem.marker.setVisible(isVisibleValue)
+                    }  
+                        
+                    return isVisibleValue;
                 }, this);
                 
                 app.ViewModel.locList.push(listItem);
             });
-        }, 
-        
-                
-        bindMarkers: function () {
-            //This will render only those markers which contains user's location    
-            this.locList().forEach(function(location) {
-                
-                location.marker.map = ko.computed(function () {
-                    return location.marker.map = location.isVisible() ? map : null;
-                    
-                }, this);
-
-            });
-        },
-        
-        test: function () {
             
-            this.locList().forEach(function(location) {
-                
-                console.log(location.label())
-                console.log('map is Object?')
-                console.log(location.marker.map instanceof Object)
-                console.log(location.marker.map)
-                
-                // console.log(map instanceof Function);
-                // console.log(location.marker.map instanceof Function)
-               
-                
-                // console.log(location.marker)
-            });
         }, 
         
-        loader: function () {
-            console.log('google is loaded')
-            // app.ViewModel.init();
-            app.Map.initMap();
-            app.ViewModel.bindMarkers();
-        }
+        
+       //IGNORE BELOW  
+        
+        // bindMarkers: function () {
+        //   app.ViewModel.locList().forEach(function (location) {
+        //     location.marker.map = ko.computed(function() {
+        //         return (location.isVisible()) ? map : null
+        //     },this)
+            
+        //     console.log('bindMarkers')  
+              
+        //   })
+          
+        // },
+       
 
     };
     ko.applyBindings(app.ViewModel.init);
