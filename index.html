@@ -11,7 +11,7 @@
     <aside data-bind="with: app.vm" class="search-panel">
       <input data-bind="textInput: filter" name="search" placeholder="type your search ">
       <ul data-bind="foreach: locList" class="loc-list">
-        <li data-bind="text: label, visible: isVisible, click: $parent.getFocus" class="loc-item"></li>
+        <li data-bind="text: label, visible: isVisible, click: $parent.selectLocation" class="loc-item"></li>
       </ul>
     </aside>
     <div id="map"></div>
@@ -23,6 +23,7 @@
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="js/model.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
     <script src="js/main.js"></script>
     <script src="js/map-data.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxXKeQf7B1-ar9clBwmK5cu9lmXeRNqpQ&amp;callback=app.Map.initMap" async defer></script>

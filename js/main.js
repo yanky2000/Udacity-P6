@@ -18,20 +18,22 @@ var app = app || {};
 
         this.locList = ko.observableArray([]);
 
-        var Location = function(location) {
-            this.label = ko.observable(location.label);
-            this.position = ko.observable(location.position);
-            this.title = ko.observable(location.title);
-            this.info = ko.observable(location.info);
-            this.icon = ko.observable(location.icon);
-            this.rubric = ko.observable(location.rubric);
-        };
 
-        this.initData = function() {
+        this.initData = function(list) {
 
+            var Location = function(location) {
+                this.label = ko.observable(location.label);
+                this.position = ko.observable(location.position);
+                this.title = ko.observable(location.title);
+                this.info = ko.observable(location.info);
+                this.icon = ko.observable(location.icon);
+                this.rubric = ko.observable(location.rubric);
+            };
+
+            self.locList = ko.observableArray([]);
             // We start off by creating a list of locations from Model data. 
             // the isVisible property is used to "filter" both location list and markers
-            app.Model.map(function(locItem) {
+            list.forEach(function(locItem) {
                 var listItem = new Location(locItem);
 
                 listItem.isVisible = ko.computed(function() {
@@ -51,11 +53,11 @@ var app = app || {};
             });
 
         };
-        this.initData();
+        self.initData(app.Model);
 
-        this.currentMarker = false; // Updates by user actions
+        this.lastMarker = false; // Updates by user actions
 
-        this.getFocus = function(e) {
+        this.selectLocation = function(e) {
 
             var selectedMarker = e.marker ? e.marker : e;
             // Need code above because we have 2 different click events (from map and locList)
@@ -73,18 +75,18 @@ var app = app || {};
             // }
 
 
-            if (self.currentMarker !== selectedMarker) {
+            if (self.lastMarker !== selectedMarker) {
 
-                if (self.currentMarker) {
-                    self.currentMarker.setAnimation(null);
-                    self.currentMarker.infowindow.close();
+                if (self.lastMarker) {
+                    self.lastMarker.setAnimation(null);
+                    self.lastMarker.infowindow.close();
                 }
 
-                self.currentMarker = selectedMarker;
-                self.currentMarker.setAnimation(google.maps.Animation.BOUNCE);
-                self.loadData(self.currentMarker.name);
-               };
-            }
+                self.lastMarker = selectedMarker;
+                self.lastMarker.setAnimation(google.maps.Animation.BOUNCE);
+                self.loadData(self.lastMarker.name);
+            };
+        }
 
         this.loadData = function(locationName) {
             var $body = $('body');
@@ -116,7 +118,27 @@ var app = app || {};
                 },
             });
             return false;
+        };
+
+        this.updateFirebase = function() {
+            var myFirebaseRef = new Firebase("https://fend-p6.firebaseio.com/");
+
+            myFirebaseRef.child("model").on("value", function(snapshot) {
+                var message = (app.Model == snapshot.val()) ? "is up-to-date" : "has been updated";
+                console.log("data " + message);
+                console.log('appModel before is ' + app.Model[0].label);
+                console.log('snapshot val is ' + snapshot.val()[0].label);
+
+
+                // console.log(snapshot.val()[0].label);  // Alerts "San Francisco"
+                app.Model = snapshot.val();
+                console.log('appModel before is ' + app.Model[0].label);
+
+                self.initData(snapshot.val());
+            });
+
         }
+        self.updateFirebase();
 
     };
 

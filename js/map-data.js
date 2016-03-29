@@ -22,7 +22,7 @@ var app = app || {};
                 });
 
                 item.marker.addListener('click', function() {
-                    app.vm.getFocus(item.marker);
+                    app.vm.selectLocation(item.marker);
                 });
 
 

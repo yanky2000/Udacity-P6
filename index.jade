@@ -12,7 +12,7 @@ body
       input(data-bind="textInput: filter" name='search', placeholder='type your search ')
       
       ul.loc-list(data-bind="foreach: locList")
-        li.loc-item(data-bind="text: label, visible: isVisible, click: $parent.getFocus")
+        li.loc-item(data-bind="text: label, visible: isVisible, click: $parent.selectLocation")
 
     #map
     
@@ -25,6 +25,7 @@ body
     script(src='//code.jquery.com/jquery-migrate-1.2.1.min.js')
 
     script(src="js/model.js")
+    script(src='https://cdn.firebase.com/js/client/2.4.2/firebase.js')
     script(src="js/main.js")
     script(src='js/map-data.js')
     
