@@ -8,20 +8,23 @@
 </head>
 <body>
   <div class="home-wrap">
-    <aside data-bind="with: app.ViewModel" class="search-panel">
+    <aside data-bind="with: app.vm" class="search-panel">
       <input data-bind="textInput: filter" name="search" placeholder="type your search ">
-      <p data-bind="text: filter"></p>
       <ul data-bind="foreach: locList" class="loc-list">
-        <li data-bind="text: label, click: $parent.getFocus" class="loc-item"></li>
-        <!-- li(data-bind="text: isVisible")-->
-        <!-- li(data-bind="text: marker")-->
+        <li data-bind="text: label, visible: isVisible, click: $parent.getFocus" class="loc-item"></li>
       </ul>
     </aside>
     <div id="map"></div>
+    <div class="wikipedia-container">
+      <h3 id="wikipedia-header">Relevant Wikipedia Links</h3>
+      <ul id="wikipedia-links"> </ul>
+    </div>
+    <script src="assets/js/knockout-3.4.0-debug.js"></script>
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="js/model.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/map-data.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxXKeQf7B1-ar9clBwmK5cu9lmXeRNqpQ&amp;callback=app.Map.initMap" async defer></script>
   </div>
-  <script src="assets/js/knockout-3.4.0-debug.js"></script>
-  <script src="js/model.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/map-data.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxXKeQf7B1-ar9clBwmK5cu9lmXeRNqpQ&amp;callback=app.Map.initMap" async defer></script>
 </body>

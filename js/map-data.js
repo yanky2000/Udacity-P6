@@ -10,18 +10,19 @@ var app = app || {};
                 zoom: 13
             });
 
-            app.ViewModel.locList().forEach(function(item) {
+            app.vm.locList().forEach(function(item) {
                 item.marker = new google.maps.Marker({
                     map: map,
                     animation: google.maps.Animation.DROP,
                     position: item.position(),
+                    name: item.label(),
                     infowindow: new google.maps.InfoWindow({
                         content: item.label()
                     })
                 });
 
                 item.marker.addListener('click', function() {
-                    app.ViewModel.getFocus(item.marker);
+                    app.vm.getFocus(item.marker);
                 });
 
 

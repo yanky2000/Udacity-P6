@@ -14,7 +14,7 @@ html, body {
   width: 100%;
 }
 
-.home-wrap aside {
+aside, .wikipedia-container {
   z-index: 1;
   position: absolute;
   top: 0;
@@ -24,13 +24,18 @@ html, body {
   background-color: grey;
 }
 
-.home-wrap aside input {
+aside input, .wikipedia-container input {
   width: 100%;
 }
 
-.home-wrap aside ul {
+aside ul, .wikipedia-container ul {
   color: white;
   list-style-type: none;
+}
+
+.wikipedia-container {
+  left: 80%;
+  width: 20%;
 }
 
 li.loc-item {
