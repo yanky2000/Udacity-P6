@@ -30,7 +30,7 @@ var app = app || {};
                 this.rubric = ko.observable(location.rubric);
             };
 
-            self.locList = ko.observableArray([]);
+            // self.locList = ko.observableArray([]);
             // We start off by creating a list of locations from Model data. 
             // the isVisible property is used to "filter" both location list and markers
             list.forEach(function(locItem) {
@@ -140,6 +140,7 @@ var app = app || {};
 
                 self.initData(snapshot.val());
             });
+            self.locList = ko.observableArray([]);
 
         }
         self.updateFirebase();
