@@ -51,6 +51,9 @@ var app = app || {};
 
                 self.locList.push(listItem);
             });
+            console.log(self.locList()); // testing firebase
+            console.log(self.locList()[0].label()); // testing firebase
+
 
         };
         self.initData(app.Model);
@@ -128,11 +131,12 @@ var app = app || {};
                 console.log("data " + message);
                 console.log('appModel before is ' + app.Model[0].label);
                 console.log('snapshot val is ' + snapshot.val()[0].label);
+                // console.log('locList val is ' + self.locList()[0].label);
 
 
                 // console.log(snapshot.val()[0].label);  // Alerts "San Francisco"
                 app.Model = snapshot.val();
-                console.log('appModel before is ' + app.Model[0].label);
+                // console.log('appModel before is ' + app.Model[0].label);
 
                 self.initData(snapshot.val());
             });
@@ -142,7 +146,7 @@ var app = app || {};
 
     };
 
-    app.vm = new ViewModel;
+    app.vm = new ViewModel();
     ko.applyBindings(app.vm);
 
 })()
