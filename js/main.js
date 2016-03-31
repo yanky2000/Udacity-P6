@@ -1,25 +1,26 @@
+/** TODO:
+ * - sort location items in the list
+ * - travis search form and mobile nav
+ * - inject web font
+ * - set font size and marging
+ * - Put good title for the map
+ * - style wiki pane
+ */
+
+
 var app = app || {};
 
 (function() {
     'use strict';
 
-    var ViewModel = function() {
+    var ViewModel = function(data) {
         var self = this;
-        this.filter = ko.observable("");
 
-        this.locList = ko.observableArray([]);
+        this.filter = ko.observable(""); // This is what user types in search form 
+        this.locList = ko.observableArray([]); // It'll be our generated location list we operate on.
 
-        /*** Creating location list for view */
-        this.initData = function(locArray = app.Model) {
-            console.log("locList at entry of initData(): " + self.locList());
-
-            self.locList = ko.observableArray([]);
-            /** THE BUG IS HERE!!!
-             * after self.updateFirebase() fires self.locList() becomes empty, but View still has them! The question is "What does View actually display: an element of locList() array or some other instance?"
-             * Apparently sel.locList = ko.observableArray([]) doesn't clear locations out from the View!
-            */
-
-            console.log("locList after clearing in initData(): " + self.locList());
+        // We start off by creating location list from our Model data.        
+        this.initData = function(locationArray = app.Model) {
 
             var Location = function(location) {
                 this.label = ko.observable(location.label);
@@ -30,9 +31,9 @@ var app = app || {};
                 this.rubric = ko.observable(location.rubric);
             };
 
-            // We start off by creating a list of locations from Model data. 
-            // the isVisible property is used to "filter" both location list and markers
-            locArray.forEach(function(locItem) {
+            var templist = []; 
+
+            locationArray.forEach(function(locItem) {
                 var listItem = new Location(locItem);
 
                 listItem.isVisible = ko.computed(function() {
@@ -48,18 +49,18 @@ var app = app || {};
                     return isVisibleValue;
                 }, this);
 
-                self.locList.push(listItem);
+                templist.push(listItem);
+
             });
-            console.log("yandex value in Model: " + app.Model[0].label);
-            console.log("yandex value in locList: " + (self.locList()[0] ? self.locList()[0].label() : "no data yet"));
+            self.locList(templist);
         };
 
-        self.initData(app.Model);
-
+        self.initData();
         
-        this.lastMarker = false; // Updates by user actions
+        this.lastMarker = false;
 
-        this.selectLocation = function(e) {
+        // Describes what happens when user clicks either on map marker or location item in the list
+        this.animateLocation = function(e) {
 
             var selectedMarker = e.marker ? e.marker : e;
             // Need code above because we have 2 different click events (from map and locList)
@@ -79,8 +80,9 @@ var app = app || {};
             };
         }
 
+        // After user selects location wiki articles are generated automatically
         this.loadData = function(locationName) {
-            var $body = $('body');
+            // var $body = $('body');
             var $wikiElem = $('#wikipedia-links');
             var $wikiHeaderElem = $('#wikipedia-header');
 
@@ -111,18 +113,20 @@ var app = app || {};
             return false;
         };
 
+        // We also want to keep locations data up-to-date with cloud DB.
         this.updateFirebase = function() {
             var myFirebaseRef = new Firebase("https://fend-p6.firebaseio.com/");
 
             myFirebaseRef.child("model").on("value", function(snapshot) {
-                /*** should check if new data differs from app.Model, if true - update app.Model */
-                console.log("data " + ((app.Model == snapshot.val()) ? "is up-to-date" : "has been updated"));
 
                 app.Model = snapshot.val();
+
                 self.initData();
                 app.Map.initMap()
             });
         }
+
+        self.updateFirebase()
     };
 
     app.vm = new ViewModel();

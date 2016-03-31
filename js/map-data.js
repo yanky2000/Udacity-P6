@@ -4,7 +4,6 @@ var app = app || {};
     app.Map = {
         initMap: function(obectsArray = app.vm.locList()) {
 
-            // First we begin by creating a map
             map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: 55.7352057, lng: 37.5912406 },
                 zoom: 13
@@ -22,7 +21,7 @@ var app = app || {};
                 });
 
                 item.marker.addListener('click', function() {
-                    app.vm.selectLocation(item.marker);
+                    app.vm.animateLocation(item.marker);
                 });
             })
         }

@@ -4,14 +4,15 @@
   <meta name="viewport" content="initial-scale=1.0">
   <meta charset="utf-8">
   <link rel="stylesheet" href="assets/css/normalize.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <div class="home-wrap">
     <aside data-bind="with: app.vm" class="search-panel">
       <input data-bind="textInput: filter" name="search" placeholder="type your search ">
-      <ul data-bind="foreach: locList" class="loc-list">
-        <li data-bind="text: label, visible: isVisible, click: $parent.selectLocation" class="loc-item"></li>
+      <ul data-bind="foreach: locList()" class="loc-list">
+        <li data-bind="text: label, visible: isVisible, click: $parent.animateLocation" class="loc-item"></li>
       </ul>
     </aside>
     <div id="map"></div>

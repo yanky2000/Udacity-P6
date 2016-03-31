@@ -4,6 +4,7 @@ head
   meta(name='viewport', content='initial-scale=1.0')
   meta(charset='utf-8')
   link(rel="stylesheet", href="assets/css/normalize.css")
+  link(href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css')
   link(rel="stylesheet", href="css/styles.css")
 body
   .home-wrap
@@ -11,8 +12,8 @@ body
 
       input(data-bind="textInput: filter" name='search', placeholder='type your search ')
       
-      ul.loc-list(data-bind="foreach: locList")
-        li.loc-item(data-bind="text: label, visible: isVisible, click: $parent.selectLocation")
+      ul.loc-list(data-bind="foreach: locList()")
+        li.loc-item(data-bind="text: label, visible: isVisible, click: $parent.animateLocation")
 
     #map
     
