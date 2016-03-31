@@ -2,7 +2,7 @@ var app = app || {};
 'use strict',
 
     app.Map = {
-        initMap: function() {
+        initMap: function(obectsArray = app.vm.locList()) {
 
             // First we begin by creating a map
             map = new google.maps.Map(document.getElementById('map'), {
@@ -10,7 +10,7 @@ var app = app || {};
                 zoom: 13
             });
 
-            app.vm.locList().forEach(function(item) {
+            obectsArray.forEach(function(item) {
                 item.marker = new google.maps.Marker({
                     map: map,
                     animation: google.maps.Animation.DROP,
@@ -24,12 +24,7 @@ var app = app || {};
                 item.marker.addListener('click', function() {
                     app.vm.selectLocation(item.marker);
                 });
-
-
             })
-
-
-
         }
     }
 

@@ -1,14 +1,5 @@
-// 1. Create a list of location from Model
-//1.1 Create observables
-//1.2 Create filter and set isVisible property
-//1.3 Apply bindings
-
-// 2. Once google is loaded: 
-//2.1 Create a map
-//2.2 Create markers
-//2.2.1 Attach markers to the location list
-//2.2.2 Link markers map value to isVisible property
 var app = app || {};
+
 (function() {
     'use strict';
 
@@ -18,8 +9,17 @@ var app = app || {};
 
         this.locList = ko.observableArray([]);
 
+        /*** Creating location list for view */
+        this.initData = function(locArray = app.Model) {
+            console.log("locList at entry of initData(): " + self.locList());
 
-        this.initData = function(list) {
+            self.locList = ko.observableArray([]);
+            /** THE BUG IS HERE!!!
+             * after self.updateFirebase() fires self.locList() becomes empty, but View still has them! The question is "What does View actually display: an element of locList() array or some other instance?"
+             * Apparently sel.locList = ko.observableArray([]) doesn't clear locations out from the View!
+            */
+
+            console.log("locList after clearing in initData(): " + self.locList());
 
             var Location = function(location) {
                 this.label = ko.observable(location.label);
@@ -30,10 +30,9 @@ var app = app || {};
                 this.rubric = ko.observable(location.rubric);
             };
 
-            // self.locList = ko.observableArray([]);
             // We start off by creating a list of locations from Model data. 
             // the isVisible property is used to "filter" both location list and markers
-            list.forEach(function(locItem) {
+            locArray.forEach(function(locItem) {
                 var listItem = new Location(locItem);
 
                 listItem.isVisible = ko.computed(function() {
@@ -51,13 +50,13 @@ var app = app || {};
 
                 self.locList.push(listItem);
             });
-            console.log(self.locList()); // testing firebase
-            console.log(self.locList()[0].label()); // testing firebase
-
-
+            console.log("yandex value in Model: " + app.Model[0].label);
+            console.log("yandex value in locList: " + (self.locList()[0] ? self.locList()[0].label() : "no data yet"));
         };
+
         self.initData(app.Model);
 
+        
         this.lastMarker = false; // Updates by user actions
 
         this.selectLocation = function(e) {
@@ -66,17 +65,6 @@ var app = app || {};
             // Need code above because we have 2 different click events (from map and locList)
 
             selectedMarker.infowindow.open(map, selectedMarker);
-
-            /***Alternative marker animation style */
-            // If we don't want inforwindow open, when user clicks on location list item.
-
-            // if (selectedMarker === e) {
-            //     selectedMarker.infowindow.open(map, e);
-            //     // e.infowindow.open(map, e);
-            // } else {
-            //     e.marker.infowindow.open(map, e.marker);
-            // }
-
 
             if (self.lastMarker !== selectedMarker) {
 
@@ -127,24 +115,14 @@ var app = app || {};
             var myFirebaseRef = new Firebase("https://fend-p6.firebaseio.com/");
 
             myFirebaseRef.child("model").on("value", function(snapshot) {
-                var message = (app.Model == snapshot.val()) ? "is up-to-date" : "has been updated";
-                console.log("data " + message);
-                console.log('appModel before is ' + app.Model[0].label);
-                console.log('snapshot val is ' + snapshot.val()[0].label);
-                // console.log('locList val is ' + self.locList()[0].label);
+                /*** should check if new data differs from app.Model, if true - update app.Model */
+                console.log("data " + ((app.Model == snapshot.val()) ? "is up-to-date" : "has been updated"));
 
-
-                // console.log(snapshot.val()[0].label);  // Alerts "San Francisco"
                 app.Model = snapshot.val();
-                // console.log('appModel before is ' + app.Model[0].label);
-
-                self.initData(snapshot.val());
+                self.initData();
+                app.Map.initMap()
             });
-            self.locList = ko.observableArray([]);
-
         }
-        self.updateFirebase();
-
     };
 
     app.vm = new ViewModel();
