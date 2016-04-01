@@ -31,7 +31,7 @@ var app = app || {};
                 this.rubric = ko.observable(location.rubric);
             };
 
-            var templist = []; 
+            var templist = [];
 
             locationArray.forEach(function(locItem) {
                 var listItem = new Location(locItem);
@@ -56,7 +56,7 @@ var app = app || {};
         };
 
         self.initData();
-        
+
         this.lastMarker = false;
 
         // Describes what happens when user clicks either on map marker or location item in the list
@@ -76,6 +76,7 @@ var app = app || {};
 
                 self.lastMarker = selectedMarker;
                 self.lastMarker.setAnimation(google.maps.Animation.BOUNCE);
+                $('.wiki-container').show()
                 self.loadData(self.lastMarker.name);
             };
         }
@@ -101,7 +102,8 @@ var app = app || {};
                     var wikiArticleWebUrl = data[3];
 
                     for (var i = 0, respLength = data[1].length; i < respLength; i++) {
-                        wikiArticlesList.push('<li class = "wiki-article">' + wikiArticleHeadline[i] +
+                        wikiArticlesList.push('<li class = "wiki-article">' +
+                            '<h3 class="wiki-art-headline">' + wikiArticleHeadline[i] + '</h3>' +
                             '<a href=' + wikiArticleWebUrl[i] + '>' + wikiArticleWebUrl[i] + '</li>');
                     }
 
@@ -109,6 +111,9 @@ var app = app || {};
                     clearTimeout(wikiRequestTimeout);
 
                 },
+                fail: function() {
+                    $wikiHeaderElem.text("Sorry, could not load");
+                }
             });
             return false;
         };

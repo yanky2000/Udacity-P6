@@ -4,16 +4,73 @@ html, body
     padding: 0
     font-family: 'Open Sans', sans-serif;
     
+input[type=search] 
+    //removes default webkit style
+    -webkit-appearance: textfield
+    -webkit-box-sizing: content-box
+    font-family: inherit
+    font-size: 100%
+    
+    background: #ededed url(/assets/img/search-icon.png) no-repeat 9px center
+    border: solid 1px #ccc
+    margin: 1em
+    padding: 9px 10px 9px 45px
+    width: 70px
+    
+    border-radius: 10em
+    transition: all .5s
+    
+//removes default webkit style
+input::-webkit-search-decoration,
+input::-webkit-search-cancel-button 
+    display: none
+    
+    
+input[type=search]:focus
+    width: 150px
+    background-color: #fff
+    border-color: #6dcff6
+    box-shadow: 0 0 5px rgba(109,207,246, .5)
+    // Credits: http://webdesignerwall.com/tutorials/expandable-mobile-search-form 
+
+//-- Put media queiry here for small search -->
+// input[type=search]
+//     width: 15px
+//     padding-left: 10px
+//     color: transparent
+//     cursor: pointer
+    
+// input[type=search]:hover
+//     background-color: #fff
+    
+// input[type=search]:focus
+//     width: 130px
+//     padding-left: 32px
+//     color: #000
+//     background-color: #fff
+//     cursor: auto
+
+    
+    
+
+        
 .home-wrap
     position: relative
     height: 100%
+    
+
+
+
+
+
+
 
     #map
         height: 100%
         width: 100%
 
 
-    aside, .wikipedia-container
+    aside, .wiki-container
         z-index: 1
         position: absolute
         top: 0
@@ -22,15 +79,31 @@ html, body
         height: 100%
         background-color: grey
 
-        input
-            width: 100%
-        ul
+        ul.loc-list
             color: white
             list-style-type: none
-
-    .wikipedia-container
+            padding-left: 2em
+            
+    button:hover
+        transform: translateX(100%)
+        transition: all .5s ease-in-out
+        
+    .wiki-container
         left: 80%
         width: 20%
+        display: none
+        
+        h3
+            padding-left: 1em
+        li
+            a
+                color: white
+                font-size: 0.75em
+        
+        .wiki-art-headline
+            font-size: 1em
+            padding-left: 0em
+            margin-bottom: 0em
 
 
     li.loc-item

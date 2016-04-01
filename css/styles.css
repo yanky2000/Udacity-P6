@@ -2,6 +2,33 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-family: 'Open Sans', sans-serif;
+}
+
+input[type=search] {
+  -webkit-appearance: textfield;
+  -webkit-box-sizing: content-box;
+  font-family: inherit;
+  font-size: 100%;
+  background: #ededed url(/assets/img/search-icon.png) no-repeat 9px center;
+  border: solid 1px #ccc;
+  margin: 1em;
+  padding: 9px 10px 9px 45px;
+  width: 70px;
+  border-radius: 10em;
+  transition: all .5s;
+}
+
+input::-webkit-search-decoration,
+input::-webkit-search-cancel-button {
+  display: none;
+}
+
+input[type=search]:focus {
+  width: 150px;
+  background-color: #fff;
+  border-color: #6dcff6;
+  box-shadow: 0 0 5px rgba(109, 207, 246, 0.5);
 }
 
 .home-wrap {
@@ -14,7 +41,7 @@ html, body {
   width: 100%;
 }
 
-aside, .wikipedia-container {
+.home-wrap aside, .home-wrap .wiki-container {
   z-index: 1;
   position: absolute;
   top: 0;
@@ -24,21 +51,41 @@ aside, .wikipedia-container {
   background-color: grey;
 }
 
-aside input, .wikipedia-container input {
-  width: 100%;
-}
-
-aside ul, .wikipedia-container ul {
+.home-wrap aside ul.loc-list, .home-wrap .wiki-container ul.loc-list {
   color: white;
   list-style-type: none;
+  padding-left: 2em;
 }
 
-.wikipedia-container {
+.home-wrap button:hover {
+  -webkit-transform: translateX(100%);
+      -ms-transform: translateX(100%);
+          transform: translateX(100%);
+  transition: all .5s ease-in-out;
+}
+
+.home-wrap .wiki-container {
   left: 80%;
   width: 20%;
+  display: none;
 }
 
-li.loc-item {
+.home-wrap .wiki-container h3 {
+  padding-left: 1em;
+}
+
+.home-wrap .wiki-container li a {
+  color: white;
+  font-size: 0.75em;
+}
+
+.home-wrap .wiki-container .wiki-art-headline {
+  font-size: 1em;
+  padding-left: 0em;
+  margin-bottom: 0em;
+}
+
+.home-wrap li.loc-item {
   margin-bottom: 20px;
   cursor: pointer;
 }
