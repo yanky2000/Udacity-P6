@@ -5,22 +5,31 @@ head
   meta(charset='utf-8')
   link(rel="stylesheet", href="assets/css/normalize.css")
   link(href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css')
+  
+  link(rel="stylesheet", href="assets/css/menu.css")
   link(rel="stylesheet", href="css/styles.css")
 body
     .home-wrap
-        aside.search-panel(data-bind="with: app.vm")
+    
+        nav(class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1" data-bind="with: app.vm")
+            
             form
-                input(type="search" data-bind="textInput: filter" placeholder = "Search")
-
+                input.search-field(type="search" data-bind="textInput: filter" placeholder = "Search")
+            
             ul.loc-list(data-bind="foreach: locList()")
-                li.loc-item(data-bind="text: label, visible: isVisible, click: $parent.animateLocation")
-            button Button
+                // li.item-container
+                a.loc-item(data-bind="text: label, visible: isVisible, click: $parent.animateLocation")
+                    
+                    // img(data-bind="attr: {src: icon}, visible: isVisible" style="width:20px;height:20px;") 
+                
+            .wiki-container 
+                h3#wikipedia-header Wiki Links 
+                ul#wikipedia-links 
+            
+
+        button#showLeft
 
         #map
-    
-        .wiki-container
-            h3#wikipedia-header Relevant Wikipedia Links
-            ul#wikipedia-links 
 
     script(src='assets/js/knockout-3.4.0-debug.js')
     script(src='//code.jquery.com/jquery-1.12.0.min.js')
@@ -30,5 +39,7 @@ body
     script(src='https://cdn.firebase.com/js/client/2.4.2/firebase.js')
     script(src="js/main.js")
     script(src='js/map-data.js')
+    script(src='assets/js/classie.js')
+    script(src='assets/js/menu.js')
     
     script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCxXKeQf7B1-ar9clBwmK5cu9lmXeRNqpQ&callback=app.Map.initMap' async defer )

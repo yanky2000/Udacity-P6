@@ -5,7 +5,7 @@ var app = app || {};
 
   app.Model = [
       {
-        label: 'yandex',
+        label: 'Yandex',
         position: {
           lat: 55.7342446,
           lng: 37.5881678
@@ -16,14 +16,14 @@ var app = app || {};
         rubric: 'IT',
         isVisible: true
       }, {
-        label: 'white crane',
+        label: 'The white crane',
         position: {
           lat: 55.730955,
           lng: 37.5912852
         },
         title: 'white crane',
         info: 'Good Korean restaurant',
-        icon: "url: or link",
+        icon: 'assets/img/food.svg',
         rubric: 'cafe',
         isVisible: true
       }, {

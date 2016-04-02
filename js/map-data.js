@@ -16,6 +16,7 @@ var app = app || {};
                     animation: google.maps.Animation.DROP,
                     position: item.position(),
                     name: item.label(),
+                    // icon: item.icon(),
                     infowindow: new google.maps.InfoWindow({
                         // content: item.label()+" "+item.info()
                         content: string,

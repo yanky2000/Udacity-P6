@@ -1,10 +1,11 @@
-# Udacity-P6
+# If you ever come to Moscow...
 
-## Questions:
+The app is pretty straightforward, you probably won't need any manual or readmes for using it.
 
-<!-- How to reference filtered array of locations created in ViewModel from map-data.js -->
+Locations you'll see on this map are synced with Firebase cloud and get updated every time you launch the app. I promise I'll keep adding new places in the future, so make sure you come later on and check out new cool stuff here! 
+  
 
-<!-- Confused about how to 'glue' google map code with ko.observableArray. What is the actual scoping architecture, when my app runs? Specifically, global vars in app.js and map.js? How window. relates to it?
+I borrowed design for menu and input form from here: 
 
-Do I need convert array of initial data to observableArray?
-Is it neccessary because of future localStorage or Firebase issues? -->
+http://tympanus.net/codrops/2013/04/17/slide-and-push-menus/
+http://webdesignerwall.com/tutorials/expandable-mobile-search-form 

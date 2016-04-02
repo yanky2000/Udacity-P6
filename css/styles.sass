@@ -4,6 +4,9 @@ html, body
     padding: 0
     font-family: 'Open Sans', sans-serif;
     
+button, input
+    outline: none
+    
 input[type=search] 
     //removes default webkit style
     -webkit-appearance: textfield
@@ -33,66 +36,49 @@ input[type=search]:focus
     box-shadow: 0 0 5px rgba(109,207,246, .5)
     // Credits: http://webdesignerwall.com/tutorials/expandable-mobile-search-form 
 
-//-- Put media queiry here for small search -->
-// input[type=search]
-//     width: 15px
-//     padding-left: 10px
-//     color: transparent
-//     cursor: pointer
-    
-// input[type=search]:hover
-//     background-color: #fff
-    
-// input[type=search]:focus
-//     width: 130px
-//     padding-left: 32px
-//     color: #000
-//     background-color: #fff
-//     cursor: auto
+ul
+    padding: 0em
+    margin: 0
 
-    
-    
+.loc-item
+    cursor: pointer
 
+.item-container
+    display: flex
+    flex-direction: row
+    align-items: center
         
 .home-wrap
     position: relative
     height: 100%
     
-
-
-
-
-
-
-
+    button
+        position: absolute
+        top: 4%
+        left: 90%
+        border: 3px solid white
+        // text-align: center
+        width: 75px
+        height: 75px
+        z-index: 1
+        border-radius: 50%
+        background: 
+            color: #47a3da
+            // color: red
+            image: url('/assets/img/sicon.svg') 
+            size: 35px
+            repeat: no-repeat
+            position: center
+        opacity: 0.6
+        &:hover
+            opacity: 1
+        
     #map
         height: 100%
         width: 100%
-
-
-    aside, .wiki-container
-        z-index: 1
-        position: absolute
-        top: 0
-        left: 0
-        width: 250px
-        height: 100%
-        background-color: grey
-
-        ul.loc-list
-            color: white
-            list-style-type: none
-            padding-left: 2em
-            
-    button:hover
-        transform: translateX(100%)
-        transition: all .5s ease-in-out
-        
+       
     .wiki-container
-        left: 80%
-        width: 20%
-        display: none
-        
+
         h3
             padding-left: 1em
         li
@@ -102,13 +88,58 @@ input[type=search]:focus
         
         .wiki-art-headline
             font-size: 1em
-            padding-left: 0em
-            margin-bottom: 0em
+            padding-left: 1em
+            margin: 0em
 
 
-    li.loc-item
-        margin-bottom: 20px
+@media (max-width: 600px)
+    //-- Put media queiry here for small search -->
+    input[type=search]
+        width: 150px
+        padding-left: 10px
+        color: transparent
         cursor: pointer
+        padding-left: 50px
+        
+       
+    input[type=search]:hover
+        background-color: #fff
+        
+    input[type=search]:focus
+        width: 130px
+        padding-left: 32px
+        color: #000
+        background-color: #fff
+        cursor: auto
+        
+    button#showLeft
+        top: 2%
+        left: 80%
+        width: 55px
+        height: 55px
+        background:
+            size: 25px
+
+    .cbp-spmenu h3
+        font-size: 1.5em
+        padding: 0em
+            
+    .cbp-spmenu a
+        font-size: 1em
+       
+    .cbp-spmenu-vertical a
+        padding: 1em
+    
+    a.wiki-url
+        padding: 0.5em 0.5em 0.5em 1.5em
+        
+@media (min-width: 601px) and (max-width: 1000px)
+    button#showLeft
+        top: 2%
+        width: 60px
+        height: 60px
+        background:
+            size: 25px
 
 
-
+    

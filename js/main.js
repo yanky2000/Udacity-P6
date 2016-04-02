@@ -1,13 +1,3 @@
-/** TODO:
- * - sort location items in the list
- * - travis search form and mobile nav
- * - inject web font
- * - set font size and marging
- * - Put good title for the map
- * - style wiki pane
- */
-
-
 var app = app || {};
 
 (function() {
@@ -16,8 +6,9 @@ var app = app || {};
     var ViewModel = function(data) {
         var self = this;
 
-        this.filter = ko.observable(""); // This is what user types in search form 
-        this.locList = ko.observableArray([]); // It'll be our generated location list we operate on.
+        this.filter = ko.observable(""); // This is what user inputs in search field.
+
+        this.locList = ko.observableArray([]); 
 
         // We start off by creating location list from our Model data.        
         this.initData = function(locationArray = app.Model) {
@@ -36,6 +27,7 @@ var app = app || {};
             locationArray.forEach(function(locItem) {
                 var listItem = new Location(locItem);
 
+                // For now, we filter locations only by its name(label), maybe we'll use some other options later on.
                 listItem.isVisible = ko.computed(function() {
                     var list_Str = listItem.label().toLowerCase();
                     var search_Str = self.filter();
@@ -63,7 +55,8 @@ var app = app || {};
         this.animateLocation = function(e) {
 
             var selectedMarker = e.marker ? e.marker : e;
-            // Need code above because we have 2 different click events (from map and locList)
+            // Need code above because we have click events from 2 sources: map and locList, 
+            // which may pass in 2 different objects (location object and it's marker)
 
             selectedMarker.infowindow.open(map, selectedMarker);
 
@@ -81,9 +74,8 @@ var app = app || {};
             };
         }
 
-        // After user selects location wiki articles are generated automatically
+        // After user selects location wiki articles are generated automatically for that location
         this.loadData = function(locationName) {
-            // var $body = $('body');
             var $wikiElem = $('#wikipedia-links');
             var $wikiHeaderElem = $('#wikipedia-header');
 
@@ -103,8 +95,7 @@ var app = app || {};
 
                     for (var i = 0, respLength = data[1].length; i < respLength; i++) {
                         wikiArticlesList.push('<li class = "wiki-article">' +
-                            '<h3 class="wiki-art-headline">' + wikiArticleHeadline[i] + '</h3>' +
-                            '<a href=' + wikiArticleWebUrl[i] + '>' + wikiArticleWebUrl[i] + '</li>');
+                            '<a class="wiki-url" href=' + wikiArticleWebUrl[i] + '>'  + wikiArticleHeadline[i] + '</li>');
                     }
 
                     $wikiElem.append(wikiArticlesList);
@@ -112,13 +103,13 @@ var app = app || {};
 
                 },
                 fail: function() {
-                    $wikiHeaderElem.text("Sorry, could not load");
+                    $wikiHeaderElem.text("Sorry, could not load wiki links");
                 }
             });
             return false;
         };
 
-        // We also want to keep locations data up-to-date with cloud DB.
+        // We also want to keep locations data up-to-date with cloud DB (Firebase).
         this.updateFirebase = function() {
             var myFirebaseRef = new Firebase("https://fend-p6.firebaseio.com/");
 
