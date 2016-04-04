@@ -3,6 +3,7 @@ var app = app || {};
 (function () {
   'use strict';
 
+/** Our default locations data. */
   app.Model = [
       {
         label: 'Yandex',

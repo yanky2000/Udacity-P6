@@ -3,17 +3,20 @@ var app = app || {};
 (function() {
     'use strict';
 
+    /** Our ViewModel class*/
     var ViewModel = function(data) {
         var self = this,
             lastFilterVal = false;
 
-        this.filter = ko.observable(""); // This is what user inputs in search field.
+        /** This is what user inputs in search field. */
+        this.filter = ko.observable(""); 
 
+        /** Array of location we use for 'View' */
         this.locList = ko.observableArray([]);
 
         this.wikiArticlesList = ko.observableArray([]);
 
-        // We start off by creating location list from our Model data.        
+        /** Creates locations list from app.Model data. */
         this.initData = function(locationArray = app.Model) {
 
             var Location = function(location) {
@@ -27,14 +30,13 @@ var app = app || {};
 
             var templist = [];
 
+            /** Adds isVisible property to each location item for filtering purposes*/
             locationArray.forEach(function(locItem) {
                 var listItem = new Location(locItem);
 
-                // For now, we filter locations only by its name(label), maybe we'll use some other options later on.
                 listItem.isVisible = ko.computed(function() {
                     var list_Str = listItem.label().toLowerCase();
                     var search_Str = self.filter();
-
                     var isVisibleValue = (list_Str.indexOf(search_Str) > -1) ? true : false;
 
                     if (listItem.marker) {
@@ -42,6 +44,7 @@ var app = app || {};
                     }
 
                     return isVisibleValue;
+
                 }, this);
 
                 templist.push(listItem);
@@ -54,12 +57,11 @@ var app = app || {};
 
         this.lastMarker = false;
 
-        // Describes what happens when user clicks either on map marker or location item in the list
+        /** Describes what happens when user clicks either on map marker or location item in the list */
         this.animateLocation = function(e) {
 
+            /** Need code above because we have click events from 2 sources: map and locList, which may pass in 2 different objects (location object and it's marker)*/
             var selectedMarker = e.marker ? e.marker : e;
-            // Need code above because we have click events from 2 sources: map and locList, 
-            // which may pass in 2 different objects (location object and it's marker)
 
             selectedMarker.infowindow.open(map, selectedMarker);
 
@@ -83,8 +85,11 @@ var app = app || {};
             self.lastMarker = false; // added it only to make var filterCloseW work.
         };
 
-        // To close infoWindows when user starts typing into search form & filters locations.
-        // var itself has no special meaning, we just use it's ko.computed 'listening' property. 
+        function markerAnimOn() {
+            self.lastMarker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+
+        /**  To close infoWindows when user starts typing into search form & filters locations. Var itself has no special meaning, we just use it's ko.computed 'listening' property.*/ 
         var filterCloseInfoW = ko.computed(function() {
             if (self.filter() !== lastFilterVal && self.lastMarker !== false) {
                 self.markerAnimOff();
@@ -92,17 +97,13 @@ var app = app || {};
             lastFilterVal = self.filter();
         });
 
-        function markerAnimOn() {
-            self.lastMarker.setAnimation(google.maps.Animation.BOUNCE);
-        }
-
-        // After user selects location wiki articles are generated automatically for that location
+        /**  After user selects location wiki articles are loaded in async mode  for that location */
         this.loadData = function(locationName) {
             var $wikiElem = $('#wikipedia-links');
             var $wikiHeaderElem = $('#wikipedia-header');
 
             $wikiElem.empty();
-
+            
             var wikiRequestTimeout = setTimeout(function() {
                 $wikiElem.text('failed to load wiki articles');
             }, 8000);
@@ -114,6 +115,7 @@ var app = app || {};
                     var wikiItem;
                     var wikiList = [];
 
+                    /** Formats new wiki articles array for given location */
                     for (var i = 0, respLength = data[1].length; i < respLength; i++) {
                         wikiItem = {
                             headline: data[1][i],
@@ -127,6 +129,8 @@ var app = app || {};
                     clearTimeout(wikiRequestTimeout);
 
                 },
+
+                /** In case of problems connecting to wiki api */                
                 fail: function() {
                     $wikiHeaderElem.text("Sorry, could not load wiki links");
                 }
@@ -135,19 +139,19 @@ var app = app || {};
             return false;
         };
 
-        // We also want to keep locations data up-to-date with cloud DB (Firebase).
+        /** We also want to keep locations data up-to-date with cloud DB (Firebase).*/
         this.updateFirebase = function() {
             var myFirebaseRef = new Firebase("https://fend-p6.firebaseio.com/");
 
+            /** When we get data from the Firebase we update Model data and reconstruct locations list and all its properties */
             myFirebaseRef.child("model").on("value", function(snapshot) {
-
                 app.Model = snapshot.val();
-
                 self.initData();
                 app.Map.initMap();
             });
         };
 
+        /** Data updates is activated by default */
         self.updateFirebase();
     };
 

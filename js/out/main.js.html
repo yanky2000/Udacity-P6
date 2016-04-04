@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: main.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: main.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var app = app || {};
+
+(function() {
+    'use strict';
+
+    /** This is our ViewModel class
+     * @memberOf app
+    */
+    var ViewModel = function(data) {
+        var self = this,
+            lastFilterVal = false;
+
+        /** This is what user inputs in search field. */
+        this.filter = ko.observable(""); 
+
+        this.locList = ko.observableArray([]);
+
+        this.wikiArticlesList = ko.observableArray([]);
+
+        /** Creates locations list from app.Model data. */
+        this.initData = function(locationArray = app.Model) {
+
+            var Location = function(location) {
+                this.label = ko.observable(location.label);
+                this.position = ko.observable(location.position);
+                this.title = ko.observable(location.title);
+                this.info = ko.observable(location.info);
+                this.icon = ko.observable(location.icon);
+                this.rubric = ko.observable(location.rubric);
+            };
+
+            var templist = [];
+
+            /** Adds isVisible property to each location item for filtering purposes*/
+            locationArray.forEach(function(locItem) {
+                var listItem = new Location(locItem);
+
+                listItem.isVisible = ko.computed(function() {
+                    var list_Str = listItem.label().toLowerCase();
+                    var search_Str = self.filter();
+
+                    var isVisibleValue = (list_Str.indexOf(search_Str) > -1) ? true : false;
+
+                    if (listItem.marker) {
+                        listItem.marker.setVisible(isVisibleValue);
+                    }
+
+                    return isVisibleValue;
+                }, this);
+
+                templist.push(listItem);
+
+            });
+            self.locList(templist);
+        };
+
+        self.initData();
+
+        this.lastMarker = false;
+
+        /** Describes what happens when user clicks either on map marker or location item in the list */
+        this.animateLocation = function(e) {
+
+            /** Need code above because we have click events from 2 sources: map and locList, which may pass in 2 different objects (location object and it's marker)*/
+            var selectedMarker = e.marker ? e.marker : e;
+
+            selectedMarker.infowindow.open(map, selectedMarker);
+
+            if (self.lastMarker !== selectedMarker) {
+
+                if (self.lastMarker) {
+                    self.markerAnimOff();
+                }
+
+                self.lastMarker = selectedMarker;
+                markerAnimOn();
+                $('.wiki-container').show();
+                self.loadData(self.lastMarker.name);
+            }
+        };
+
+        /**  To close infoWindows when user starts typing into search form &amp; filters locations. Var itself has no special meaning, we just use it's ko.computed 'listening' property.*/ 
+        var filterCloseInfoW = ko.computed(function() {
+            if (self.filter() !== lastFilterVal &amp;&amp; self.lastMarker !== false) {
+                self.markerAnimOff();
+            }
+            lastFilterVal = self.filter();
+        });
+
+        this.markerAnimOff = function() {
+            self.lastMarker.setAnimation(null);
+            self.lastMarker.infowindow.close();
+            self.lastMarker = false; // added it only to make var filterCloseW work.
+        };
+
+        function markerAnimOn() {
+            self.lastMarker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+
+        /**  After user selects location wiki articles are loaded in async mode  for that location */
+        this.loadData = function(locationName) {
+            var $wikiElem = $('#wikipedia-links');
+            var $wikiHeaderElem = $('#wikipedia-header');
+
+            $wikiElem.empty();
+            
+            var wikiRequestTimeout = setTimeout(function() {
+                $wikiElem.text('failed to load wiki articles');
+            }, 8000);
+
+            $.ajax({
+                url: "https://en.wikipedia.org/w/api.php?action=opensearch&amp;search=" + locationName + "&amp;format=json&amp;callback=wikiCallback",
+                dataType: "jsonp",
+                success: function(data) {
+                    var wikiItem;
+                    var wikiList = [];
+
+                    /** Formats new wiki articles array for given location */
+                    for (var i = 0, respLength = data[1].length; i &lt; respLength; i++) {
+                        wikiItem = {
+                            headline: data[1][i],
+                            url: data[3][i]
+                        };
+
+                        wikiList.push(wikiItem);
+                    }
+
+                    self.wikiArticlesList(wikiList);
+                    clearTimeout(wikiRequestTimeout);
+
+                },
+
+                /** In case of problems connecting to wiki api */                
+                fail: function() {
+                    $wikiHeaderElem.text("Sorry, could not load wiki links");
+                }
+            });
+
+            return false;
+        };
+
+        /** We also want to keep locations data up-to-date with cloud DB (Firebase).*/
+        this.updateFirebase = function() {
+            var myFirebaseRef = new Firebase("https://fend-p6.firebaseio.com/");
+
+            /** When we get data from the Firebase we update Model data and reconstruct locations list and all its properties */
+            myFirebaseRef.child("model").on("value", function(snapshot) {
+                app.Model = snapshot.val();
+                self.initData();
+                app.Map.initMap();
+            });
+        };
+
+        /** Data updates is activated by default */
+        self.updateFirebase();
+    };
+
+    app.vm = new ViewModel();
+    ko.applyBindings(app.vm);
+
+})();</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#app">app</a></li><li><a href="global.html#fail">fail</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Apr 04 2016 13:23:15 GMT+0300 (RTZ 2 (зима))
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

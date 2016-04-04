@@ -1,7 +1,13 @@
 var app = app || {};
 'use strict',
-
+  
+    /** Below is Google map related code*/
     app.Map = {
+
+        /**
+         * Creates google map and add map markers to locations
+         * @param {array} obectsArray Locations array generated in app.vm
+         */
         initMap: function(obectsArray = app.vm.locList()) {
             if (typeof google !== 'undefined') {
 
@@ -36,7 +42,10 @@ var app = app || {};
             }
         },
 
-        googleErrorCase: function(error) {
+        /** 
+         * Onerror function for google script in index.html
+         * */
+        googleErrorCase: function() {
             alert("Please, check for Internet connection.\nGoogle map service is out of reach!");
         }
 
