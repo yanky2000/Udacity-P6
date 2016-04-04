@@ -20,11 +20,13 @@
       </ul>
       <div class="wiki-container"> 
         <h3 id="wikipedia-header">Wiki Links </h3>
-        <ul id="wikipedia-links"> </ul>
+        <ul id="wikipedia-links" data-bind="foreach: wikiArticlesList()"> 
+          <li><a data-bind="text: headline, attr: {href: url}"></a></li>
+        </ul>
       </div>
     </nav>
-    <button id="showLeft"></button>
-    <div id="map"></div>
+    <button id="showLeft" class="showLeft"></button>
+    <div id="map" class="main-map"></div>
   </div>
   <script src="assets/js/knockout-3.4.0-debug.js"></script>
   <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
@@ -35,5 +37,5 @@
   <script src="js/map-data.js"></script>
   <script src="assets/js/classie.js"></script>
   <script src="assets/js/menu.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxXKeQf7B1-ar9clBwmK5cu9lmXeRNqpQ&amp;callback=app.Map.initMap" async defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxXKeQf7B1-ar9clBwmK5cu9lmXeRNqpQ&amp;callback=app.Map.initMap" onerror="app.Map.googleErrorCase()" async defer></script>
 </body>

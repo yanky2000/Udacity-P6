@@ -24,12 +24,14 @@ body
                 
             .wiki-container 
                 h3#wikipedia-header Wiki Links 
-                ul#wikipedia-links 
+                ul#wikipedia-links(data-bind="foreach: wikiArticlesList()") 
+                    li
+                        a(data-bind="text: headline, attr: {href: url}")
             
 
-        button#showLeft
+        button#showLeft.showLeft
 
-        #map
+        #map.main-map
 
     script(src='assets/js/knockout-3.4.0-debug.js')
     script(src='//code.jquery.com/jquery-1.12.0.min.js')
@@ -42,4 +44,4 @@ body
     script(src='assets/js/classie.js')
     script(src='assets/js/menu.js')
     
-    script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCxXKeQf7B1-ar9clBwmK5cu9lmXeRNqpQ&callback=app.Map.initMap' async defer )
+    script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCxXKeQf7B1-ar9clBwmK5cu9lmXeRNqpQ&callback=app.Map.initMap' onerror="app.Map.googleErrorCase()" async defer )

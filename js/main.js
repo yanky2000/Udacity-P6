@@ -4,11 +4,14 @@ var app = app || {};
     'use strict';
 
     var ViewModel = function(data) {
-        var self = this;
+        var self = this,
+            lastFilterVal = false;
 
         this.filter = ko.observable(""); // This is what user inputs in search field.
 
-        this.locList = ko.observableArray([]); 
+        this.locList = ko.observableArray([]);
+
+        this.wikiArticlesList = ko.observableArray([]);
 
         // We start off by creating location list from our Model data.        
         this.initData = function(locationArray = app.Model) {
@@ -35,7 +38,7 @@ var app = app || {};
                     var isVisibleValue = (list_Str.indexOf(search_Str) > -1) ? true : false;
 
                     if (listItem.marker) {
-                        listItem.marker.setVisible(isVisibleValue)
+                        listItem.marker.setVisible(isVisibleValue);
                     }
 
                     return isVisibleValue;
@@ -63,15 +66,34 @@ var app = app || {};
             if (self.lastMarker !== selectedMarker) {
 
                 if (self.lastMarker) {
-                    self.lastMarker.setAnimation(null);
-                    self.lastMarker.infowindow.close();
+                    self.markerAnimOff();
                 }
 
                 self.lastMarker = selectedMarker;
-                self.lastMarker.setAnimation(google.maps.Animation.BOUNCE);
-                $('.wiki-container').show()
+                markerAnimOn();
+                $('.wiki-container').show();
                 self.loadData(self.lastMarker.name);
-            };
+            }
+        };
+
+
+        this.markerAnimOff = function() {
+            self.lastMarker.setAnimation(null);
+            self.lastMarker.infowindow.close();
+            self.lastMarker = false; // added it only to make var filterCloseW work.
+        };
+
+        // To close infoWindows when user starts typing into search form & filters locations.
+        // var itself has no special meaning, we just use it's ko.computed 'listening' property. 
+        var filterCloseInfoW = ko.computed(function() {
+            if (self.filter() !== lastFilterVal && self.lastMarker !== false) {
+                self.markerAnimOff();
+            }
+            lastFilterVal = self.filter();
+        });
+
+        function markerAnimOn() {
+            self.lastMarker.setAnimation(google.maps.Animation.BOUNCE);
         }
 
         // After user selects location wiki articles are generated automatically for that location
@@ -89,16 +111,19 @@ var app = app || {};
                 url: "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + locationName + "&format=json&callback=wikiCallback",
                 dataType: "jsonp",
                 success: function(data) {
-                    var wikiArticlesList = [];
-                    var wikiArticleHeadline = data[1];
-                    var wikiArticleWebUrl = data[3];
+                    var wikiItem;
+                    var wikiList = [];
 
                     for (var i = 0, respLength = data[1].length; i < respLength; i++) {
-                        wikiArticlesList.push('<li class = "wiki-article">' +
-                            '<a class="wiki-url" href=' + wikiArticleWebUrl[i] + '>'  + wikiArticleHeadline[i] + '</li>');
+                        wikiItem = {
+                            headline: data[1][i],
+                            url: data[3][i]
+                        };
+
+                        wikiList.push(wikiItem);
                     }
 
-                    $wikiElem.append(wikiArticlesList);
+                    self.wikiArticlesList(wikiList);
                     clearTimeout(wikiRequestTimeout);
 
                 },
@@ -106,6 +131,7 @@ var app = app || {};
                     $wikiHeaderElem.text("Sorry, could not load wiki links");
                 }
             });
+
             return false;
         };
 
@@ -118,14 +144,14 @@ var app = app || {};
                 app.Model = snapshot.val();
 
                 self.initData();
-                app.Map.initMap()
+                app.Map.initMap();
             });
-        }
+        };
 
-        self.updateFirebase()
+        self.updateFirebase();
     };
 
     app.vm = new ViewModel();
     ko.applyBindings(app.vm);
 
-})()
+})();

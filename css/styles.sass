@@ -1,10 +1,12 @@
-html, body
+html, 
+body
     height: 100%
     margin: 0
     padding: 0
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     
-button, input
+button, 
+input
     outline: none
     
 input[type=search] 
@@ -56,24 +58,17 @@ ul
         position: absolute
         top: 4%
         left: 90%
-        border: 3px solid white
-        // text-align: center
+        border: 3px solid white 
         width: 75px
         height: 75px
         z-index: 1
         border-radius: 50%
-        background: 
-            color: #47a3da
-            // color: red
-            image: url('/assets/img/sicon.svg') 
-            size: 35px
-            repeat: no-repeat
-            position: center
+        background: #47a3da url("/assets/img/sicon.svg") no-repeat center/35px
         opacity: 0.6
         &:hover
             opacity: 1
         
-    #map
+    .main-map
         height: 100%
         width: 100%
        
@@ -100,7 +95,6 @@ ul
         color: transparent
         cursor: pointer
         padding-left: 50px
-        
        
     input[type=search]:hover
         background-color: #fff
@@ -112,7 +106,7 @@ ul
         background-color: #fff
         cursor: auto
         
-    button#showLeft
+    button.showLeft
         top: 2%
         left: 80%
         width: 55px
@@ -122,8 +116,8 @@ ul
 
     .cbp-spmenu h3
         font-size: 1.5em
-        padding: 0em
-            
+        padding: 0em // Removes padding
+
     .cbp-spmenu a
         font-size: 1em
        
@@ -134,7 +128,7 @@ ul
         padding: 0.5em 0.5em 0.5em 1.5em
         
 @media (min-width: 601px) and (max-width: 1000px)
-    button#showLeft
+    button.showLeft
         top: 2%
         width: 60px
         height: 60px
